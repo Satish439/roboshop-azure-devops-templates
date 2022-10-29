@@ -1,0 +1,16 @@
+stages:
+  - stage: CI
+    jobs:
+      - jobs: CI
+        steps:
+          - script: mvn clean package
+            displayName: Download Maven dependencies
+          - script: docker build -t shipping
+            displayName: Docker build
+
+- stage: DockerUpload
+  condition: succeeded()
+  jobs:
+    - job: dockerUpload
+      steps:
+        - script:
